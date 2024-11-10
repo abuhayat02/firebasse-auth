@@ -24,13 +24,6 @@ export default function Regester() {
                     console.log(data.user);
                     setSuccess('Ok done your registration')
                 })
-
-
-
-
-
-
-
             })
             .catch((error) => {
                 setSuccess('')

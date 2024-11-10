@@ -1,14 +1,31 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import auth from "../../../firebase.info"
-import { useContext } from "react"
+import { useContext, useRef, useState } from "react"
 import { MyContext } from "../../contex"
 import { Link, useNavigate } from "react-router-dom"
 
 export default function Login() {
   let navigete = useNavigate()
 
+  let [successfuly , setSuccessfuly] = useState('')
+
   let {setData} = useContext(MyContext);
   let googleProvider = new GoogleAuthProvider()
+
+
+  let hendelLogin= (e)=>{
+    e.preventDefault()
+    let userEmail = e.target.email.value;
+    let userPass = e.target.password.value;
+    signInWithEmailAndPassword(auth , userEmail , userPass)
+    .then((info)=>{
+      console.log(info.user);
+      setSuccessfuly('good job dear user')
+    })
+    .catch((error) => {
+      setSuccessfuly('not working , try')
+    })
+  }
 
 
   let handleGoogleSignIn = ()=>{       
@@ -22,6 +39,18 @@ export default function Login() {
       console.log(e)
     })
   }
+
+  let emailRef = useRef() ;
+  let hendelForgetPassword = ()=>{
+    sendPasswordResetEmail(auth , emailRef.current.value)
+    .then(() => {
+      alert('check your email')
+    })
+    .catch((error)=>{
+      console.log('error = ' , error)
+    })
+  }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
     <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
@@ -44,12 +73,13 @@ export default function Login() {
         <div className="border-t border-gray-300"></div>
       </div>
 
-      <form className="space-y-6">
+      <form onSubmit={hendelLogin} className="space-y-6">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
           <input
+          ref={emailRef}
             type="email"
-            id="email"
+            name="email"
             required
             className="block w-full px-3 py-2 mt-1 text-gray-900 placeholder-gray-500 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="you@example.com"
@@ -60,12 +90,13 @@ export default function Login() {
           <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
           <input
             type="password"
-            id="password"
+            name="password"
             required
             className="block w-full px-3 py-2 mt-1 text-gray-900 placeholder-gray-500 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="••••••••"
           />
         </div>
+        <p onClick={hendelForgetPassword} className="cursor-pointer hover:text-gray-500">forget password ?</p>
 
         <button
           type="submit"
@@ -78,6 +109,7 @@ export default function Login() {
       <p className="text-sm text-center text-gray-600">
         Do not have an account? <Link to='/register' className=' className="text-indigo-600 hover:text-indigo-500'>Sign up</Link>
       </p>
+      <p>{successfuly}</p>
     </div>
   </div>
   )
