@@ -7,6 +7,7 @@ import Home from './Components/pages/Home/Home';
 import About from './Components/pages/About/About';
 import Contact from './Components/pages/Contact/Contact';
 import  Login  from './Components/pages/Login/Login';
+import Regester from './Components/Register/Regester.jsx'
 
 
 let myRouters = createBrowserRouter([
@@ -30,6 +31,10 @@ let myRouters = createBrowserRouter([
       {
         path : '/login',
         element : <Login></Login>
+      },
+      {
+        path : '/register',
+        element : <Regester></Regester>
       }
     ]
   },

@@ -2,7 +2,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import auth from "../../../firebase.info"
 import { useContext } from "react"
 import { MyContext } from "../../contex"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function Login() {
   let navigete = useNavigate()
@@ -76,7 +76,7 @@ export default function Login() {
       </form>
 
       <p className="text-sm text-center text-gray-600">
-        Do not have an account? <a href="#" className="text-indigo-600 hover:text-indigo-500">Sign up</a>
+        Do not have an account? <Link to='/register' className=' className="text-indigo-600 hover:text-indigo-500'>Sign up</Link>
       </p>
     </div>
   </div>
